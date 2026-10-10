@@ -107,17 +107,44 @@ while True:
     #match/case é só um switch case em python.
     match opicao:
         case 1:
-            # Cadastrar
-            print(f'--- Iniciando Cadastro de jogos ---')
-            nome = str(input("Digite o nome do Jogo que deseja Cadastrar: "))
-            genero = str(input("Digite o gênero do jogo: "))
-            preco = float(input("Digite o Valor do jogo: "))
-            print(f'--- Jogo {nome} cadastrado com sucesso@ ---')
+            while True:
+                limpar_tela()
+                # Cadastrar
+                print(f'--- Iniciando Cadastro de jogos ---')
+                try:
+                    #Validação do nome
+                    nome = input("Digite o nome do Jogo que deseja Cadastrar:").strip()
+                    if nome.casefold() == "abc":
+                        raise ValueError ("O nome do jogo não pode ser 'abc'!")
+                    if not nome:
+                        raise ValueError("O nome do jogo não pode ser vazio!")
+                    #Validação do gênero
+                    genero = input("Digite o gênero do jogo: ").strip()
+                    if genero.casefold() == "abc":
+                        raise ValueError("O gênero do jogo não pode ser 'abc'!")
+                    if not genero:
+                        raise ValueError("O gênero do jogo não pode ser vazio!")
+                    #validação do preço
+                    preco_str = input("Digite o Valor do jogo: ")
+                    preco = float(preco_str.replace(',', '.')) # substitui vírgula por ponto.
+                    if preco <= 0:
+                        raise ValueError("O preço do jogo deve ser um número maior que zero!")
+                    #Se todas as validações ocorreem sem erros, o loop será interrompido e o jogo será cadastrado no sistema
+                    break
+                except ValueError as e:
+                    #O bloco except acima está capturando a exceção ValueError e exibindo uma mensagem de erro, informando ao usuário que a entrada de dados foi inválida e solicita que ele tente novamente.
+                    print(f"Erro: {e}! Tente novamente.")
+                    time.sleep(3)
+            #Se tudo ocorrer sem erros, o jogo será cadastrado no sistema e uma mensagem de sucesso será exibida
+            print(f'--- Jogo {nome} cadastrado com sucesso! ---')
             cadastrar(nome, genero, preco)
-        case 2: 
+            time.sleep(3)
+
+        case 2:
             # listar 
             print('--- Listando jogos cadastrados ---')
             listar_jogos()
+
         case 3:
             # Atualizar
             print('--- Atualizando Jogo ---')
