@@ -15,3 +15,9 @@ Foi feito uma atualização na parte de cadastro (match case 1).
 - Se " " será exibido uma mensagem de erro
 - Caso seja usado "," no preço, o programa converte para ".", assim evitando erro ocasionado pelo caracter digitado
 - Se os dados informados forem válidos, o jogo será cadastrado no sistema (DB)
+
+atualização 14/10/26 (Case 3 e 4)
+- Foi feito pequenas alterações no código com intuito de aumenta a tolerância a erros do sistema
+- Case 3 foi atualizado para que não aceite " " e nem "abc"
+- Corrigido alguns pequenos erros gramáticais que haviam passado despercebidos.
+- O case 4 foi enxugado para evitar redundâncias

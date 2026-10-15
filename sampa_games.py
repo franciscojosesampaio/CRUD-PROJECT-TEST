@@ -133,10 +133,9 @@ while True:
                     break
                 except ValueError as e:
                     #O bloco except acima está capturando a exceção ValueError e exibindo uma mensagem de erro, informando ao usuário que a entrada de dados foi inválida e solicita que ele tente novamente.
-                    print(f"Erro: {e}! Tente novamente.")
+                    print(f"Erro: {e} | | Tente novamente.")
                     time.sleep(3)
             #Se tudo ocorrer sem erros, o jogo será cadastrado no sistema e uma mensagem de sucesso será exibida
-            print(f'--- Jogo {nome} cadastrado com sucesso! ---')
             cadastrar(nome, genero, preco)
             time.sleep(3)
 
@@ -146,49 +145,54 @@ while True:
             listar_jogos()
 
         case 3:
-            # Atualizar
-            print('--- Atualizando Jogo ---')
-            try:
-                id_jogo = int(input("Digite o ID do jogo que deseja atualizar: "))
-                if id_jogo <= 0:
-                    raise ValueError("O ID do jogo deve ser um número maio que zero!")
-                if not cursor.execute("SELECT id FROM jogos WHERE id = ?", (id_jogo,)).fetchone():
-                    raise ValueError("Nenhum jogo encontrado com o ID fornecido.")
-                novo_nome = str(input("Digite o novo nome do jogo:"))
-                novo_genero = str(input("Digite o novo gênero do jogo: "))
-                novo_preco = float(input("Digite o novo preço do jogo: "))
-                atualizar_jogo(id_jogo, novo_nome, novo_genero, novo_preco)
-            except ValueError as e:
-                if str(e):
-                    print(f"Erro: {e}")
-                else:
-                    print("Entrada inválida! Certifique-se de digitar valores válidos.")
-                time.sleep(3)
-            except KeyError as e:
-                print(f"Erro: {e}")
-                time.sleep(3)
-            
+            while True:
+                limpar_tela()
+                listar_jogos()
+                time.sleep(6)
+                limpar_tela()
+                # Atualizar
+                print('--- Atualizando Jogo ---')
+                try:
+                    id_jogo = int(input("Digite o ID do jogo que deseja atualizar: "))
+                    if id_jogo <= 0:
+                        raise ValueError("O ID do jogo deve ser um número maior que zero!")
+                    if not cursor.execute("SELECT id FROM jogos WHERE id = ?", (id_jogo,)).fetchone():
+                        raise ValueError("Nenhum jogo encontrado com o ID fornecido.")
+                    novo_nome = input("Digite o novo nome do jogo:").strip()
+                    if not novo_nome:
+                        raise ValueError("O nome do jogo não pode ser vazio!")
+                    if novo_nome.casefold() == "abc":
+                        raise ValueError("O nome do jogo não pode ser 'abc'!")
+                    novo_genero = input("Digite o novo gênero do jogo: ").strip()
+                    if not novo_genero:
+                        raise ValueError("O gênero do jogo não pode ser vazio!")
+                    if novo_genero.casefold() == "abc":
+                        raise ValueError("O gênero do jogo não pode ser 'abc'!")
+                    novo_preco_str = input("Digite o novo preço do jogo: ")
+                    novo_preco = float(novo_preco_str.replace(",", "."))
+                    if novo_preco <= 0:
+                        raise ValueError("O preço do jogo deve ser um número maior que zero!")
+                    atualizar_jogo(id_jogo, novo_nome, novo_genero, novo_preco)
+                    break
+                except ValueError as e:
+                    print(f"Erro: {e} | | Tente novamente.")
+                    time.sleep(3)
         case 4: 
-            # Excluindo
-            print('--- Tela de exclusão de jogos ---')
-            listar_jogos()
-            time.sleep(3)
-            try: 
-                id_jogo = int(input("Digite o ID do jogo que deseja excluir:"))
-                if id_jogo <= 0:
-                    raise ValueError("O ID do jogo deve ser um número maior que zero!")
-                if not cursor.execute("SELECT id FROM jogos WHERE id = ?", (id_jogo,)).fetchone():
-                    raise ValueError("Nenhum jogo encontrado com o ID fornecido.")
-            except ValueError as e:
-                if str(e):
-                    print(f"Erro: {e}")
-                else:
-                    print("Entrada inválida! Certifique-se de digitar valores válidos.")
+            while True:
+                limpar_tela()
+                # Excluindo
+                print('--- Tela de exclusão de jogos ---')
+                listar_jogos()
                 time.sleep(3)
-            except KeyError as e:
-                print(f"Erro: {e}")
-                time.sleep(3)              
-            excluir_jogo(id_jogo)
+                try:
+                    id_jogo = int(input("Digite o ID do jogo que deseja excluir:"))
+                    if id_jogo <= 0:
+                        raise ValueError("O ID do jogo deve ser um número maior que zero!")
+                    excluir_jogo(id_jogo)
+                    break
+                except ValueError as e:
+                    print(f"Erro: {e} | | Tente novamente.")
+                    time.sleep(3)
         case 5:
             # Finalizando aplicação
             print('Saindo do sistema')
